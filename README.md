@@ -7,11 +7,11 @@
 [Rによる確率計算](https://htmlpreview.github.io/?https://github.com/biostat-text/web_appendix/blob/main/R_distribution_functions_guide.html?raw=1)
 
 
-### 第1章: 
+### 第1章: データの整理と記述
 
-### 第2章: 
+### 第2章: 確率
 
-### 第3章: 
+### 第3章: 確率分布
 
 ### 第4章: 標本分布
   本文:
@@ -50,23 +50,23 @@
   [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch7_Problems_R.txt)
   [実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch7_Problems_R_output.txt)
 
-### 第8章: 
+### 第8章: ノンパラメトリック法
   本文:
   
   章末問題: 
 
-### 第9章: 
+### 第9章: 相関と回帰分析
   本文:
   
   章末問題: 
 
-### 第10章:
+### 第10章: ロジスティック回帰分析
   本文:
   
   章末問題: 
 
-### 第11章:
+### 第11章: 生存時間解析（基礎編）
 
-### 第12章:
+### 第12章: 生存時間解析
 
-### 第13章:
+### 第13章: 研究デザイン
