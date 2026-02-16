@@ -1,0 +1,144 @@
+> #------------------------------------------------------------------------------#
+> #  ‘æ7Í Í–––â‘è                                                              #
+> #------------------------------------------------------------------------------#
+>                                         #--------------------------------------#
+>                                         # –â1                                  #
+>                                         #--------------------------------------#
+> qf(.95,3,20)                              # ‡B 95%’l
+[1] 3.098391
+> 1-pf(19.226,3,20)                         #    P’l
+[1] 4.145641e-06
+> qt(1-0.05/6/2,20)*sqrt(22.07*(1/6+1/6))   # ‡C LSD
+[1] 7.939277
+> 
+> 
+>                                         #--------------------------------------#
+>                                         # –â2                                  #
+>                                         #--------------------------------------#
+> dat2 <- data.frame( wgt_loss=c( 6.0,  7.5,  7.0,  9.0,
++                                10.0,  9.5, 12.5, 13.0,
++                                12.0, 11.5, 12.5, 14.5,
++                                11.5, 12.5, 12.0, 15.5),
++                   treatment=rep( c("A","B","C","D"), times=4 ),
++                  ini_weight=rep( c("80-90","90-100","100-110",">=110"), each=4 )
++            )
+> dat2
+   wgt_loss treatment ini_weight
+1       6.0         A      80-90
+2       7.5         B      80-90
+3       7.0         C      80-90
+4       9.0         D      80-90
+5      10.0         A     90-100
+6       9.5         B     90-100
+7      12.5         C     90-100
+8      13.0         D     90-100
+9      12.0         A    100-110
+10     11.5         B    100-110
+11     12.5         C    100-110
+12     14.5         D    100-110
+13     11.5         A      >=110
+14     12.5         B      >=110
+15     12.0         C      >=110
+16     15.5         D      >=110
+> 
+> dat2$treatment   <- as.factor(dat2$treatment)       #—vˆö‚ÌƒJƒeƒSƒŠ‰»
+> dat2$ini_weight <- as.factor(dat2$ini_weight)
+> with( dat2, interaction.plot( treatment, ini_weight, wgt_loss, col=1:4 ) )
+> tapply( dat2$wgt_loss, dat2$treatment, mean )    # Û¶–@•Ê•W–{•½‹Ï
+     A      B      C      D 
+ 9.875 10.250 11.000 13.000 
+> 
+> 
+> anova( lm( wgt_loss ~ treatment, data=dat2 ) )               # ‡A
+Analysis of Variance Table
+
+Response: wgt_loss
+          Df Sum Sq Mean Sq F value Pr(>F)
+treatment  3 23.297  7.7656  1.1236 0.3783
+Residuals 12 82.937  6.9115               
+> anova( lm( wgt_loss ~ ini_weight + treatment, data=dat2 ) )  # ‡B
+Analysis of Variance Table
+
+Response: wgt_loss
+           Df Sum Sq Mean Sq F value    Pr(>F)    
+ini_weight  3 77.422 25.8073  42.111 1.269e-05 ***
+treatment   3 23.297  7.7656  12.671  0.001396 ** 
+Residuals   9  5.516  0.6128                      
+---
+Signif. codes:  0 e***f 0.001 e**f 0.01 e*f 0.05 e.f 0.1 e f 1
+> qt(1-0.025/6,9)*sqrt(0.6128*(1/4+1/4))                       # ‡C LSD
+[1] 1.862201
+> 
+>                                         #--------------------------------------#
+>                                         # –â3                                  #
+>                                         #--------------------------------------#
+> dat3 <- data.frame(   score=c( 52, 76, 60, 58, 58, 56, 68, 74, 58, 24, 32, 39,
++                               60, 78, 75, 72, 60, 70, 74, 77, 56, 66, 54, 49,
++                               98, 94, 96, 98, 76, 80, 84, 80, 72, 74, 76, 70 ),
++                    frequency=rep( c("Low","Medium","High"), each=12 ),
++                      program=rep( rep( c("A","B","C"), each=4 ), times=3 ) )
+> dat3$frequency <- factor(dat3$frequency, ordered=T, levels=c("Low","Medium","High") )
+> dat3$program <- factor(dat3$program )
+> dat3
+   score frequency program
+1     52       Low       A
+2     76       Low       A
+3     60       Low       A
+4     58       Low       A
+5     58       Low       B
+6     56       Low       B
+7     68       Low       B
+8     74       Low       B
+9     58       Low       C
+10    24       Low       C
+11    32       Low       C
+12    39       Low       C
+13    60    Medium       A
+14    78    Medium       A
+15    75    Medium       A
+16    72    Medium       A
+17    60    Medium       B
+18    70    Medium       B
+19    74    Medium       B
+20    77    Medium       B
+21    56    Medium       C
+22    66    Medium       C
+23    54    Medium       C
+24    49    Medium       C
+25    98      High       A
+26    94      High       A
+27    96      High       A
+28    98      High       A
+29    76      High       B
+30    80      High       B
+31    84      High       B
+32    80      High       B
+33    72      High       C
+34    74      High       C
+35    76      High       C
+36    70      High       C
+> 
+> with( dat3, interaction.plot(program, frequency, score) )
+> 
+> anova( lm(score ~  program + frequency + program:frequency, data=dat3 ) )
+Analysis of Variance Table
+
+Response: score
+                  Df Sum Sq Mean Sq F value    Pr(>F)    
+program            2 2766.1 1383.03  21.572 2.526e-06 ***
+frequency          2 4972.1 2486.03  38.777 1.154e-08 ***
+program:frequency  4  574.4  143.61   2.240   0.09113 .  
+Residuals         27 1731.0   64.11                      
+---
+Signif. codes:  0 e***f 0.001 e**f 0.01 e*f 0.05 e.f 0.1 e f 1
+> 
+> 
+> tapply( dat3$score, dat3$frequency, mean )
+     Low   Medium     High 
+54.58333 65.91667 83.16667 
+> tapply( dat3$score, dat3$program, mean )
+       A        B        C 
+76.41667 71.41667 55.83333 
+> qt(1-0.025/3,27)*sqrt(64.1*(1/12+1/12))     #LSD
+[1] 8.342806
+> 

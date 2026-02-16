@@ -1,0 +1,59 @@
+#------------------------------------------------------------------------------#
+#  ëÊ7èÕ èÕñññ‚ëË                                                              #
+#------------------------------------------------------------------------------#
+                                        #--------------------------------------#
+                                        # ñ‚1                                  #
+                                        #--------------------------------------#
+qf(.95,3,20)                              # áB 95%íl
+1-pf(19.226,3,20)                         #    Píl
+qt(1-0.05/6/2,20)*sqrt(22.07*(1/6+1/6))   # áC LSD
+
+
+                                        #--------------------------------------#
+                                        # ñ‚2                                  #
+                                        #--------------------------------------#
+dat2 <- data.frame( wgt_loss=c( 6.0,  7.5,  7.0,  9.0,
+                               10.0,  9.5, 12.5, 13.0,
+                               12.0, 11.5, 12.5, 14.5,
+                               11.5, 12.5, 12.0, 15.5),
+                  treatment=rep( c("A","B","C","D"), times=4 ),
+                 ini_weight=rep( c("80-90","90-100","100-110",">=110"), each=4 )
+           )
+dat2
+
+dat2$treatment   <- as.factor(dat2$treatment)       #óvàˆÇÃÉJÉeÉSÉäâª
+dat2$ini_weight <- as.factor(dat2$ini_weight)
+with( dat2, interaction.plot( treatment, ini_weight, wgt_loss, col=1:4 ) )
+tapply( dat2$wgt_loss, dat2$treatment, mean )    # ê€ê∂ñ@ï ïWñ{ïΩãœ
+
+
+anova( lm( wgt_loss ~ treatment, data=dat2 ) )               # áA
+anova( lm( wgt_loss ~ ini_weight + treatment, data=dat2 ) )  # áB
+qt(1-0.025/6,9)*sqrt(0.6128*(1/4+1/4))                       # áC LSD
+
+                                        #--------------------------------------#
+                                        # ñ‚3                                  #
+                                        #--------------------------------------#
+dat3 <- data.frame(   score=c( 52, 76, 60, 58, 58, 56, 68, 74, 58, 24, 32, 39,
+                              60, 78, 75, 72, 60, 70, 74, 77, 56, 66, 54, 49,
+                              98, 94, 96, 98, 76, 80, 84, 80, 72, 74, 76, 70 ),
+                   frequency=rep( c("Low","Medium","High"), each=12 ),
+                     program=rep( rep( c("A","B","C"), each=4 ), times=3 ) )
+dat3$frequency <- factor(dat3$frequency, ordered=T, levels=c("Low","Medium","High") )
+dat3$program <- factor(dat3$program )
+dat3
+
+with( dat3, interaction.plot(program, frequency, score) )
+
+anova( lm(score ~  program + frequency + program:frequency, data=dat3 ) )
+
+
+tapply( dat3$score, dat3$frequency, mean )
+tapply( dat3$score, dat3$program, mean )
+qt(1-0.025/3,27)*sqrt(64.1*(1/12+1/12))     #LSD
+
+
+
+
+
+
