@@ -1,0 +1,87 @@
+#------------------------------------------------------------------------------#
+                                        #--------------------------------------#
+                                        # —á7-1                                #
+                                        #--------------------------------------#
+dat <- data.frame( y=c( 15, 16, 17, 13, 12, 
+                        15, 18, 16, 20, 12, 
+                        22, 24, 26, 21, 19,
+                        21, 19, 16, 22, 18 ),
+                   drug=rep( c("A","B","C","D"), each=5 ) )
+dat
+( ybar_grp <- tapply( dat$y, dat$drug, mean ) )
+( ybar     <- mean( dat$y ) )
+
+stripchart(  y ~ drug, data=dat, pch=16, vert=T, method="jitter", jit=0.1, cex=0.5,
+                 xlab="drug", ylab="score" )
+points( 1:4, ybar_grp, pch="-", cex=3, col=2 )
+anova( lm( y~drug, data=dat ) )
+
+N <- nrow(dat)
+K <- 4
+
+( SST <- sum( (dat$y-ybar)^2 ) )
+( SSA <- sum( (ybar-ybar_grp[c(dat$drug)])^2 ) )
+( SSE <- SST-SSA )
+
+( SSE <- SST-SSA )
+(MSE <- SSE / (N-K))
+
+
+# A-D
+( tstat <- abs(ybar_grp[1]-ybar_grp[4])/sqrt( MSE*(1/5+1/5)) )
+( pval <- 2*( 1-pt( tstat, df=N-K ) ) )
+
+
+pairwise.t.test( dat$y, dat$drug, p.adj="non" )  # ’²®‚È‚µP’l
+pairwise.t.test( dat$y, dat$drug, p.adj="bonf" ) # Bonferroni’²®P’l
+pairwise.t.test( dat$y, dat$drug, p.adj="holm" ) # Holm’²®P’l
+
+
+                                        #--------------------------------------#
+                                        # —á7-2                                #
+                                        #--------------------------------------#
+detach(dat)
+dat <- data.frame(
+  ”N—î = factor(c("40Î‘ã", "40Î‘ã", "40Î‘ã", "40Î‘ã",
+                  "50Î‘ã", "50Î‘ã", "50Î‘ã", "50Î‘ã",
+                  "60Î‘ã", "60Î‘ã", "60Î‘ã", "60Î‘ã")),
+  “Š—^•û–@ = factor(c("ŒoŒû", "Ã’", "“\•t", "“\•t{Ã’",
+                    "ŒoŒû", "Ã’", "“\•t", "“\•t{Ã’",
+                    "ŒoŒû", "Ã’", "“\•t", "“\•t{Ã’")),
+  ŒŒ’†”Z“x = c(150, 149, 146, 143,
+              148, 145, 145, 142,
+              144, 144, 145, 139)
+)
+
+attach(dat)
+interaction.plot( ”N—î, “Š—^•û–@, ŒŒ’†”Z“x )
+# “ñŒ³”z’u•ªŽU•ªÍ
+
+
+mean(dat$ŒŒ’†”Z“x)
+
+tapply( dat$ŒŒ’†”Z“x, dat$”N—î, mean )
+tapply( dat$ŒŒ’†”Z“x, dat$“Š—^•û–@, mean )
+
+sum( (dat$ŒŒ’†”Z“x-mean(dat$ŒŒ’†”Z“x))^2 )
+
+anova( lm(ŒŒ’†”Z“x ~ “Š—^•û–@ + ”N—î, data = dat) )
+anova( lm(ŒŒ’†”Z“x ~ “Š—^•û–@, data = dat) )
+
+                                        #--------------------------------------#
+                                        # —á7-3                                #
+                                        #--------------------------------------#
+detach(dat)
+dat <- data.frame(
+@             ‰^“®=rep( rep(c("1:‚È‚µ","2:Œy“x","3:‹­“x"),each=3),3 ),
+@             –òÜ=rep(c("1:ƒvƒ‰ƒZƒ{","2:–òÜA","3:–òÜB"),each=9),
+@             ƒXƒRƒA=c(16,16,18,7,8,10,12,12,14,
+                        10,12,10,5,8,7,8,8,10,
+                        15,14,14,6,8,6,10,12,11 ) )
+dat
+
+attach(dat)
+interaction.plot( ‰^“®,  –òÜ,ƒXƒRƒA, col=1:3, lwd=3 )
+  						# •ªŽU•ªÍ•\
+anova( lm( ƒXƒRƒA ~ –òÜ + ‰^“® + –òÜ:‰^“®, data=dat ) ) 
+

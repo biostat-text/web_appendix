@@ -1,0 +1,222 @@
+> #------------------------------------------------------------------------------#
+>                                         #--------------------------------------#
+>                                         # —á7-1                                #
+>                                         #--------------------------------------#
+> dat <- data.frame( y=c( 15, 16, 17, 13, 12, 
++                         15, 18, 16, 20, 12, 
++                         22, 24, 26, 21, 19,
++                         21, 19, 16, 22, 18 ),
++                    drug=rep( c("A","B","C","D"), each=5 ) )
+> dat
+    y drug
+1  15    A
+2  16    A
+3  17    A
+4  13    A
+5  12    A
+6  15    B
+7  18    B
+8  16    B
+9  20    B
+10 12    B
+11 22    C
+12 24    C
+13 26    C
+14 21    C
+15 19    C
+16 21    D
+17 19    D
+18 16    D
+19 22    D
+20 18    D
+> ( ybar_grp <- tapply( dat$y, dat$drug, mean ) )
+   A    B    C    D 
+14.6 16.2 22.4 19.2 
+> ( ybar     <- mean( dat$y ) )
+[1] 18.1
+> 
+> stripchart(  y ~ drug, data=dat, pch=16, vert=T, method="jitter", jit=0.1, cex=0.5,
++                  xlab="drug", ylab="score" )
+> points( 1:4, ybar_grp, pch="-", cex=3, col=2 )
+> anova( lm( y~drug, data=dat ) )
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value   Pr(>F)   
+drug       3  177.8  59.267  8.9459 0.001033 **
+Residuals 16  106.0   6.625                    
+---
+Signif. codes:  0 e***f 0.001 e**f 0.01 e*f 0.05 e.f 0.1 e f 1
+> 
+> N <- nrow(dat)
+> K <- 4
+> 
+> ( SST <- sum( (dat$y-ybar)^2 ) )
+[1] 283.8
+> ( SSA <- sum( (ybar-ybar_grp[c(dat$drug)])^2 ) )
+[1] 177.8
+> ( SSE <- SST-SSA )
+[1] 106
+> 
+> ( SSE <- SST-SSA )
+[1] 106
+> (MSE <- SSE / (N-K))
+[1] 6.625
+> 
+> 
+> # A-D
+> ( tstat <- abs(ybar_grp[1]-ybar_grp[4])/sqrt( MSE*(1/5+1/5)) )
+       A 
+2.825758 
+> ( pval <- 2*( 1-pt( tstat, df=N-K ) ) )
+         A 
+0.01217633 
+> 
+> 
+> pairwise.t.test( dat$y, dat$drug, p.adj="non" )  # ’²®‚È‚µP’l
+
+        Pairwise comparisons using t tests with pooled SD 
+
+data:  dat$y and dat$drug 
+
+  A      B      C     
+B 0.3403 -      -     
+C 0.0002 0.0015 -     
+D 0.0122 0.0840 0.0669
+
+P value adjustment method: none 
+> pairwise.t.test( dat$y, dat$drug, p.adj="bonf" ) # Bonferroni’²®P’l
+
+        Pairwise comparisons using t tests with pooled SD 
+
+data:  dat$y and dat$drug 
+
+  A      B      C     
+B 1.0000 -      -     
+C 0.0012 0.0093 -     
+D 0.0731 0.5037 0.4016
+
+P value adjustment method: bonferroni 
+> pairwise.t.test( dat$y, dat$drug, p.adj="holm" ) # Holm’²®P’l
+
+        Pairwise comparisons using t tests with pooled SD 
+
+data:  dat$y and dat$drug 
+
+  A      B      C     
+B 0.3403 -      -     
+C 0.0012 0.0077 -     
+D 0.0487 0.2008 0.2008
+
+P value adjustment method: holm 
+> 
+> 
+>                                         #--------------------------------------#
+>                                         # —á7-2                                #
+>                                         #--------------------------------------#
+> detach(dat)
+> dat <- data.frame(
++   ”N—î = factor(c("40Î‘ã", "40Î‘ã", "40Î‘ã", "40Î‘ã",
++                   "50Î‘ã", "50Î‘ã", "50Î‘ã", "50Î‘ã",
++                   "60Î‘ã", "60Î‘ã", "60Î‘ã", "60Î‘ã")),
++   “Š—^•û–@ = factor(c("ŒoŒû", "Ã’", "“\•t", "“\•t{Ã’",
++                     "ŒoŒû", "Ã’", "“\•t", "“\•t{Ã’",
++                     "ŒoŒû", "Ã’", "“\•t", "“\•t{Ã’")),
++   ŒŒ’†”Z“x = c(150, 149, 146, 143,
++               148, 145, 145, 142,
++               144, 144, 145, 139)
++ )
+> 
+> attach(dat)
+> interaction.plot( ”N—î, “Š—^•û–@, ŒŒ’†”Z“x )
+> # “ñŒ³”z’u•ªŽU•ªÍ
+> 
+> 
+> mean(dat$ŒŒ’†”Z“x)
+[1] 145
+> 
+> tapply( dat$ŒŒ’†”Z“x, dat$”N—î, mean )
+40Î‘ã 50Î‘ã 60Î‘ã 
+   147    145    143 
+> tapply( dat$ŒŒ’†”Z“x, dat$“Š—^•û–@, mean )
+      ŒoŒû       Ã’       “\•t “\•t{Ã’ 
+  147.3333   146.0000   145.3333   141.3333 
+> 
+> sum( (dat$ŒŒ’†”Z“x-mean(dat$ŒŒ’†”Z“x))^2 )
+[1] 102
+> 
+> anova( lm(ŒŒ’†”Z“x ~ “Š—^•û–@ + ”N—î, data = dat) )
+Analysis of Variance Table
+
+Response: ŒŒ’†”Z“x
+          Df Sum Sq Mean Sq F value   Pr(>F)   
+“Š—^•û–@   3     60 20.0000    12.0 0.006026 **
+”N—î       2     32 16.0000     9.6 0.013497 * 
+Residuals  6     10  1.6667                    
+---
+Signif. codes:  0 e***f 0.001 e**f 0.01 e*f 0.05 e.f 0.1 e f 1
+> anova( lm(ŒŒ’†”Z“x ~ “Š—^•û–@, data = dat) )
+Analysis of Variance Table
+
+Response: ŒŒ’†”Z“x
+          Df Sum Sq Mean Sq F value  Pr(>F)  
+“Š—^•û–@   3     60   20.00  3.8095 0.05786 .
+Residuals  8     42    5.25                  
+---
+Signif. codes:  0 e***f 0.001 e**f 0.01 e*f 0.05 e.f 0.1 e f 1
+> 
+>                                         #--------------------------------------#
+>                                         # —á7-3                                #
+>                                         #--------------------------------------#
+> detach(dat)
+> dat <- data.frame(
++ @             ‰^“®=rep( rep(c("1:‚È‚µ","2:Œy“x","3:‹­“x"),each=3),3 ),
++ @             –òÜ=rep(c("1:ƒvƒ‰ƒZƒ{","2:–òÜA","3:–òÜB"),each=9),
++ @             ƒXƒRƒA=c(16,16,18,7,8,10,12,12,14,
++                         10,12,10,5,8,7,8,8,10,
++                         15,14,14,6,8,6,10,12,11 ) )
+> dat
+     ‰^“®       –òÜ ƒXƒRƒA
+1  1:‚È‚µ 1:ƒvƒ‰ƒZƒ{     16
+2  1:‚È‚µ 1:ƒvƒ‰ƒZƒ{     16
+3  1:‚È‚µ 1:ƒvƒ‰ƒZƒ{     18
+4  2:Œy“x 1:ƒvƒ‰ƒZƒ{      7
+5  2:Œy“x 1:ƒvƒ‰ƒZƒ{      8
+6  2:Œy“x 1:ƒvƒ‰ƒZƒ{     10
+7  3:‹­“x 1:ƒvƒ‰ƒZƒ{     12
+8  3:‹­“x 1:ƒvƒ‰ƒZƒ{     12
+9  3:‹­“x 1:ƒvƒ‰ƒZƒ{     14
+10 1:‚È‚µ    2:–òÜA     10
+11 1:‚È‚µ    2:–òÜA     12
+12 1:‚È‚µ    2:–òÜA     10
+13 2:Œy“x    2:–òÜA      5
+14 2:Œy“x    2:–òÜA      8
+15 2:Œy“x    2:–òÜA      7
+16 3:‹­“x    2:–òÜA      8
+17 3:‹­“x    2:–òÜA      8
+18 3:‹­“x    2:–òÜA     10
+19 1:‚È‚µ    3:–òÜB     15
+20 1:‚È‚µ    3:–òÜB     14
+21 1:‚È‚µ    3:–òÜB     14
+22 2:Œy“x    3:–òÜB      6
+23 2:Œy“x    3:–òÜB      8
+24 2:Œy“x    3:–òÜB      6
+25 3:‹­“x    3:–òÜB     10
+26 3:‹­“x    3:–òÜB     12
+27 3:‹­“x    3:–òÜB     11
+> 
+> attach(dat)
+> interaction.plot( ‰^“®,  –òÜ,ƒXƒRƒA, col=1:3, lwd=3 )
+>   # •ªŽU•ªÍ•\
+> anova( lm( ƒXƒRƒA ~ –òÜ + ‰^“® + –òÜ:‰^“®, data=dat ) ) 
+Analysis of Variance Table
+
+Response: ƒXƒRƒA
+          Df  Sum Sq Mean Sq F value    Pr(>F)    
+–òÜ       2  68.074  34.037 24.1842 7.940e-06 ***
+‰^“®       2 200.296 100.148 71.1579 2.836e-09 ***
+–òÜ:‰^“®  4  16.593   4.148  2.9474   0.04898 *  
+Residuals 18  25.333   1.407                      
+---
+Signif. codes:  0 e***f 0.001 e**f 0.01 e*f 0.05 e.f 0.1 e f 1
+> 

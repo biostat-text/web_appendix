@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>R のダウンロードとインストール方法（Windows / macOS ）</title>
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#1a1a1a; --muted:#555;
+      --card:#f6f7f8; --border:#e4e6e8; --accent:#2c7be5;
+      --codebg:#f1f5ff;
+    }
+    body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      margin:0; background:var(--bg); color:var(--fg); line-height:1.7;}
+    header{padding:28px 18px; border-bottom:1px solid var(--border); background:linear-gradient(0deg,#fff, #f7fbff);}
+    header h1{margin:0 0 6px; font-size:22px;}
+    header p{margin:0; color:var(--muted); font-size:14px;}
+    main{max-width:920px; margin:0 auto; padding:18px;}
+    .card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; margin:14px 0;}
+    h2{font-size:18px; margin:6px 0 10px;}
+    h3{font-size:16px; margin:14px 0 8px;}
+    ol, ul{margin:8px 0 8px 22px;}
+    code, pre{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Noto Sans Mono CJK JP", monospace;}
+    pre{background:var(--codebg); border:1px solid var(--border); padding:10px 12px; border-radius:10px; overflow:auto;}
+    a{color:var(--accent); text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    .note{color:var(--muted); font-size:13px;}
+    .badge{display:inline-block; padding:2px 8px; border-radius:999px; background:#e9f2ff; border:1px solid #cfe3ff; color:#114a9b; font-size:12px; margin-left:6px;}
+    footer{padding:18px; border-top:1px solid var(--border); color:var(--muted); font-size:12px;}
+    .toc a{display:block; padding:4px 0;}
+  </style>
+</head>
+<body>
+<header>
+  <h1>R のダウンロードとインストール方法 <span class="badge"></span></h1>
+</header>
+
+<main>
+   <div class="card" id="what">
+    <h2>1. R とは？</h2>
+    <p>R は、統計解析やデータ可視化に広く使われている無料のソフトウェア（オープンソース）です。R 本体をインストールすると、コマンドを入力して解析できるようになります。</p>
+  </div>
+
+
+  <div class="card" id="download">
+    <h2>3. ダウンロード（CRAN から）</h2>
+    <p>R は <strong>CRAN</strong>（Comprehensive R Archive Network）という公式の配布サイトから入手できます。</p>
+    <ol>
+      <li>CRAN のトップへアクセス：<a href="https://cran.r-project.org/" target="_blank" rel="noopener">https://cran.r-project.org/</a></li>
+      <li>使っている OS（Windows / macOS / Linux）を選びます</li>
+      <li>表示される案内に従ってインストーラ（またはパッケージ）を入手します</li>
+    </ol>
+  </div>
+
+  <div class="card" id="windows">
+    <h2>4. Windows の手順</h2>
+    <ol>
+      <li>CRAN で <strong>Download R for Windows</strong> をクリック</li>
+      <li><strong>base</strong> をクリック</li>
+      <li><strong>Download R x.y.z for Windows</strong>（最新版）をクリックしてインストーラ（.exe）を保存</li>
+      <li>保存した .exe をダブルクリックして起動</li>
+      <li>基本的には「次へ」を押して進めてOK（インストール先は標準のままで問題ありません）</li>
+      <li>完了後、「スタート」メニューから <strong>R</strong> を起動できます</li>
+    </ol>
+  </div>
+
+  <div class="card" id="mac">
+    <h2>5. macOS の手順</h2>
+    <ol>
+      <li>CRAN で <strong>Download R for macOS</strong> をクリック</li>
+      <li>お使いの macOS バージョンに合った <strong>.pkg</strong>（インストーラ）を選び、ダウンロード</li>
+      <li>.pkg を開き、画面の案内に従ってインストール</li>
+      <li>インストール後、アプリケーションから <strong>R</strong> を起動できます</li>
+    </ol>
+  </div>
+
+
+
+</main>
+</body>
+</html>

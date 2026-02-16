@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rで確率計算：pnorm など「確率分布関数」総まとめ（d/p/q/r）</title>
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#1a1a1a; --muted:#555;
+      --card:#f6f7f8; --border:#e4e6e8; --accent:#2c7be5;
+      --codebg:#f1f5ff; --warnbg:#fff7e6;
+    }
+    body{
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP",
+                   "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      margin:0; background:var(--bg); color:var(--fg); line-height:1.75;
+    }
+    header{
+      padding:28px 18px; border-bottom:1px solid var(--border);
+      background:linear-gradient(0deg,#fff, #f7fbff);
+    }
+    header h1{margin:0 0 6px; font-size:22px;}
+    header p{margin:0; color:var(--muted); font-size:14px;}
+    main{max-width:980px; margin:0 auto; padding:18px;}
+    .card{
+      background:var(--card); border:1px solid var(--border);
+      border-radius:12px; padding:16px; margin:14px 0;
+    }
+    .callout{
+      background:var(--warnbg); border:1px solid #ffe2a3;
+      border-radius:12px; padding:12px 14px; margin:12px 0;
+    }
+    h2{font-size:18px; margin:6px 0 10px;}
+    h3{font-size:16px; margin:14px 0 8px;}
+    ul, ol{margin:8px 0 8px 22px;}
+    code, pre{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Noto Sans Mono CJK JP", monospace;}
+    pre{
+      background:var(--codebg); border:1px solid var(--border);
+      padding:10px 12px; border-radius:10px; overflow:auto;
+    }
+    .pill{
+      display:inline-block; padding:2px 10px; border-radius:999px;
+      border:1px solid #cfe3ff; background:#e9f2ff; color:#114a9b;
+      font-size:12px; margin-right:6px;
+    }
+    table{border-collapse:collapse; width:100%; background:#fff; border:1px solid var(--border); border-radius:10px; overflow:hidden;}
+    th, td{border-bottom:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top;}
+    th{background:#fafbfc; font-weight:600;}
+    tr:last-child td{border-bottom:none;}
+    a{color:var(--accent);}
+    footer{padding:18px; border-top:1px solid var(--border); color:var(--muted); font-size:12px;}
+    .small{color:var(--muted); font-size:13px;}
+    .toc a{display:block; padding:4px 0; color:var(--accent); text-decoration:none;}
+    .toc a:hover{text-decoration:underline;}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Rで確率計算：pnorm など「確率分布関数」総まとめ（d / p / q / r）</h1>
+  <p>Rの確率分布は「<strong>d</strong> 密度/確率」「<strong>p</strong> 累積確率」「<strong>q</strong> 分位点」「<strong>r</strong> 乱数生成」の4系統で統一されています。ここでは実務でよく使う関数を一通り整理します。</p>
+</header>
+
+<main>
+  <div class="card toc">
+    <h2>目次</h2>
+    <a href="#basics">1. まずは基本（d/p/q/r の意味）</a>
+    <a href="#commonargs">2. 重要な共通引数（lower.tail, log.p, log）</a>
+    <a href="#normal">3. 正規分布：dnorm / pnorm / qnorm / rnorm</a>
+    <a href="#discrete">4. 離散分布：二項・ポアソンなど</a>
+    <a href="#continuous">5. 連続分布：t, χ², F, 指数, ガンマ, ベータ, ワイブル, 対数正規など</a>
+    <a href="#tips">6. よくある計算パターン（片側/両側、対数確率）</a>
+    <a href="#cheatsheet">7. 早見表（主要分布と関数名）</a>
+    <a href="#notes">8. 注意点（数値誤差・極端確率・ベクトル化）</a>
+  </div>
+
+  <div class="card" id="basics">
+    <h2>1. まずは基本（d/p/q/r の意味）</h2>
+    <ul>
+      <li><span class="pill">d*</span>：密度関数（連続）または確率関数（離散）</li>
+      <li><span class="pill">p*</span>：累積分布関数（CDF） <code>P(X ≤ x)</code></li>
+      <li><span class="pill">q*</span>：分位点（逆CDF） <code>x = F^{-1}(p)</code></li>
+      <li><span class="pill">r*</span>：乱数生成（その分布に従う乱数）</li>
+    </ul>
+    <pre><code># 例：正規分布（標準正規）
+dnorm(0)             # f(0)
+pnorm(1.96)          # P(Z ≤ 1.96)
+qnorm(0.975)         # 97.5%点
+rnorm(5)             # 乱数5個</code></pre>
+
+    <div class="callout">
+      <strong>覚え方：</strong> d = density / p = (cumulative) probability / q = quantile / r = random
+    </div>
+  </div>
+
+  <div class="card" id="commonargs">
+    <h2>2. 重要な共通引数（lower.tail, log.p, log）</h2>
+
+    <h3><code>lower.tail</code></h3>
+    <ul>
+      <li><code>lower.tail = TRUE</code>（既定）：<code>P(X ≤ x)</code></li>
+      <li><code>lower.tail = FALSE</code>：上側確率 <code>P(X &gt; x)</code>（p値計算で頻出）</li>
+    </ul>
+    <pre><code># 上側確率：P(Z > 1.96)
+pnorm(1.96, lower.tail = FALSE)</code></pre>
+
+    <h3><code>log.p</code>（p関数/q関数）</h3>
+    <ul>
+      <li><code>log.p = TRUE</code>：確率を対数で返す（または対数確率を入力として扱う）</li>
+      <li>極端に小さい確率で数値が 0 になってしまうのを避けるのに有効</li>
+    </ul>
+    <pre><code># log(上側確率)
+pnorm(10, lower.tail = FALSE, log.p = TRUE)</code></pre>
+
+    <h3><code>log</code>（d関数）</h3>
+    <ul>
+      <li><code>log = TRUE</code>：密度/確率の対数（対数尤度計算に便利）</li>
+    </ul>
+    <pre><code>dnorm(0.2, log = TRUE)</code></pre>
+  </div>
+
+  <div class="card" id="normal">
+    <h2>3. 正規分布：dnorm / pnorm / qnorm / rnorm</h2>
+    <ul>
+      <li>引数：<code>mean</code>（平均）, <code>sd</code>（標準偏差）</li>
+    </ul>
+
+    <pre><code># P(X ≤ 1.5) （X ~ N(0,1)）
+pnorm(1.5)
+
+# P(X > 1.5)
+pnorm(1.5, lower.tail = FALSE)
+
+# P(a < X ≤ b) = F(b) - F(a)
+pnorm(2) - pnorm(-1)
+
+# 両側p値（|Z| >= |z|）
+z <- 2.3
+2 * pnorm(abs(z), lower.tail = FALSE)
+
+# 95%中心区間（両側2.5%ずつ）
+qnorm(c(0.025, 0.975))</code></pre>
+  </div>
+
+  <div class="card" id="discrete">
+    <h2>4. 離散分布：二項・ポアソンなど</h2>
+
+    <h3>二項分布：dbinom / pbinom / qbinom / rbinom</h3>
+    <p><code>X ~ Binom(size = n, prob = p)</code></p>
+    <pre><code># P(X = 3)（n=10, p=0.2）
+dbinom(3, size = 10, prob = 0.2)
+
+# P(X ≤ 3)
+pbinom(3, size = 10, prob = 0.2)
+
+# P(X ≥ 3) = P(X > 2)
+pbinom(2, size = 10, prob = 0.2, lower.tail = FALSE)
+
+# 95%点（最小のxで P(X ≤ x) >= 0.95）
+qbinom(0.95, size = 10, prob = 0.2)</code></pre>
+
+    <h3>ポアソン分布：dpois / ppois / qpois / rpois</h3>
+    <p><code>X ~ Pois(lambda)</code></p>
+    <pre><code># P(X = 0)（λ=2）
+dpois(0, lambda = 2)
+
+# P(X ≤ 3)
+ppois(3, lambda = 2)
+
+# P(X ≥ 5) = P(X > 4)
+ppois(4, lambda = 2, lower.tail = FALSE)</code></pre>
+
+    <h3>幾何分布：dgeom / pgeom / qgeom / rgeom</h3>
+    <p class="small">Rの幾何分布は「最初の成功までの<strong>失敗回数</strong>」（0,1,2,...）です。</p>
+    <pre><code>dgeom(2, prob = 0.3)</code></pre>
+
+    <h3>負の二項分布：dnbinom / pnbinom / qnbinom / rnbinom</h3>
+    <p class="small">定義・パラメータ化が複数あるので <code>?dnbinom</code> を確認すると安全です。</p>
+    <pre><code>pnbinom(10, size = 5, prob = 0.4)</code></pre>
+
+    <h3>超幾何分布：dhyper / phyper / qhyper / rhyper</h3>
+    <pre><code># 赤m=10、白n=20からk=5個引くとき成功数x=2の確率
+dhyper(x = 2, m = 10, n = 20, k = 5)</code></pre>
+  </div>
+
+  <div class="card" id="continuous">
+    <h2>5. 連続分布：t, χ², F, 指数, ガンマ, ベータ, ワイブル, 対数正規など</h2>
+
+    <h3>t分布：dt / pt / qt / rt</h3>
+    <p>引数：<code>df</code>（自由度）</p>
+    <pre><code># 両側p値（t検定の形）
+tval <- 2.1; df <- 15
+2 * pt(abs(tval), df = df, lower.tail = FALSE)</code></pre>
+
+    <h3>カイ二乗分布：dchisq / pchisq / qchisq / rchisq</h3>
+    <pre><code># 上側確率（p値）
+pchisq(10, df = 4, lower.tail = FALSE)</code></pre>
+
+    <h3>F分布：df / pf / qf / rf</h3>
+    <pre><code>pf(3.2, df1 = 5, df2 = 20, lower.tail = FALSE)</code></pre>
+
+    <h3>一様分布：dunif / punif / qunif / runif</h3>
+    <pre><code>punif(0.3, min = 0, max = 1)</code></pre>
+
+    <h3>指数分布：dexp / pexp / qexp / rexp</h3>
+    <pre><code># 生存関数 S(t)=P(T>t)
+pexp(5, rate = 0.2, lower.tail = FALSE)</code></pre>
+
+    <h3>ガンマ分布：dgamma / pgamma / qgamma / rgamma</h3>
+    <pre><code>pgamma(3, shape = 2, rate = 1)</code></pre>
+
+    <h3>ベータ分布：dbeta / pbeta / qbeta / rbeta</h3>
+    <pre><code>qbeta(0.95, shape1 = 2, shape2 = 5)</code></pre>
+
+    <h3>ワイブル分布：dweibull / pweibull / qweibull / rweibull</h3>
+    <pre><code># 生存関数
+pweibull(10, shape = 1.5, scale = 8, lower.tail = FALSE)</code></pre>
+
+    <h3>対数正規分布：dlnorm / plnorm / qlnorm / rlnorm</h3>
+    <p class="small">Rでは <code>log(X)</code> が正規分布に従う定義で、引数は <code>meanlog</code>, <code>sdlog</code>。</p>
+    <pre><code>plnorm(10, meanlog = 0, sdlog = 1)</code></pre>
+
+    <h3>コーシー分布：dcauchy / pcauchy / qcauchy / rcauchy</h3>
+    <pre><code>pcauchy(0, location = 0, scale = 1)</code></pre>
+  </div>
+
+  <div class="card" id="tips">
+    <h2>6. よくある計算パターン（片側/両側、対数確率）</h2>
+
+    <h3>区間確率：P(a &lt; X ≤ b)</h3>
+    <pre><code># 例：標準正規で P(-1 < Z ≤ 2)
+pnorm(2) - pnorm(-1)</code></pre>
+
+    <h3>上側確率：P(X &gt; x)</h3>
+    <pre><code>pnorm(x, lower.tail = FALSE)
+pt(x, df, lower.tail = FALSE)
+pchisq(x, df, lower.tail = FALSE)</code></pre>
+
+    <h3>両側確率（両側p値）</h3>
+    <pre><code>2 * pnorm(abs(z), lower.tail = FALSE)
+2 * pt(abs(tval), df = df, lower.tail = FALSE)</code></pre>
+
+    <h3>極端確率は log.p を使う</h3>
+    <pre><code>pnorm(12, lower.tail = FALSE, log.p = TRUE)</code></pre>
+  </div>
+
+  <div class="card" id="cheatsheet">
+    <h2>7. 早見表（主要分布と関数名）</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>分布</th>
+          <th>d*</th>
+          <th>p*</th>
+          <th>q*</th>
+          <th>r*</th>
+          <th>主な引数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>正規</td><td><code>dnorm</code></td><td><code>pnorm</code></td><td><code>qnorm</code></td><td><code>rnorm</code></td><td><code>mean</code>, <code>sd</code></td></tr>
+        <tr><td>t</td><td><code>dt</code></td><td><code>pt</code></td><td><code>qt</code></td><td><code>rt</code></td><td><code>df</code></td></tr>
+        <tr><td>χ²</td><td><code>dchisq</code></td><td><code>pchisq</code></td><td><code>qchisq</code></td><td><code>rchisq</code></td><td><code>df</code></td></tr>
+        <tr><td>F</td><td><code>df</code></td><td><code>pf</code></td><td><code>qf</code></td><td><code>rf</code></td><td><code>df1</code>, <code>df2</code></td></tr>
+        <tr><td>二項</td><td><code>dbinom</code></td><td><code>pbinom</code></td><td><code>qbinom</code></td><td><code>rbinom</code></td><td><code>size</code>, <code>prob</code></td></tr>
+        <tr><td>ポアソン</td><td><code>dpois</code></td><td><code>ppois</code></td><td><code>qpois</code></td><td><code>rpois</code></td><td><code>lambda</code></td></tr>
+        <tr><td>指数</td><td><code>dexp</code></td><td><code>pexp</code></td><td><code>qexp</code></td><td><code>rexp</code></td><td><code>rate</code>/<code>scale</code></td></tr>
+        <tr><td>ガンマ</td><td><code>dgamma</code></td><td><code>pgamma</code></td><td><code>qgamma</code></td><td><code>rgamma</code></td><td><code>shape</code>, <code>rate</code>/<code>scale</code></td></tr>
+        <tr><td>ベータ</td><td><code>dbeta</code></td><td><code>pbeta</code></td><td><code>qbeta</code></td><td><code>rbeta</code></td><td><code>shape1</code>, <code>shape2</code></td></tr>
+        <tr><td>ワイブル</td><td><code>dweibull</code></td><td><code>pweibull</code></td><td><code>qweibull</code></td><td><code>rweibull</code></td><td><code>shape</code>, <code>scale</code></td></tr>
+        <tr><td>対数正規</td><td><code>dlnorm</code></td><td><code>plnorm</code></td><td><code>qlnorm</code></td><td><code>rlnorm</code></td><td><code>meanlog</code>, <code>sdlog</code></td></tr>
+        <tr><td>一様</td><td><code>dunif</code></td><td><code>punif</code></td><td><code>qunif</code></td><td><code>runif</code></td><td><code>min</code>, <code>max</code></td></tr>
+      </tbody>
+    </table>
+    <p class="small">さらに多くの分布は <code>?Distributions</code> を参照すると一覧が見られます。</p>
+  </div>
+
+  <div class="card" id="notes">
+    <h2>8. 注意点（数値誤差・極端確率・ベクトル化）</h2>
+    <ul>
+      <li><strong>極端確率</strong>：<code>lower.tail=FALSE</code> や <code>log.p=TRUE</code> を使うと安定します。</li>
+      <li><strong>離散分布</strong>：<code>P(X ≥ k)</code> は <code>p*(k-1, lower.tail=FALSE)</code> に直すのが基本です。</li>
+      <li><strong>ベクトル化</strong>：<code>pnorm(c(-1,0,1))</code> のように一括計算できます。</li>
+      <li><strong>定義違い</strong>：幾何・負の二項などはヘルプ（例：<code>?dgeom</code>）確認が安心です。</li>
+    </ul>
+  </div>
+</main>
+
+<footer>
+  <div>最終更新：2025-12-27（配布資料として自由に改変可）</div>
+</footer>
+</body>
+</html>
