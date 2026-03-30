@@ -9,7 +9,7 @@
 
 ### 第1章: データの整理と記述
 
-  本文:
+　本文:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch1_R.R)
 
 章末問題:
