@@ -16,6 +16,7 @@
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch1_Problems_R.R) 
 
 ### 第2章: 確率
+
   本文:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch2_R.R)
 
@@ -23,21 +24,24 @@
 [heart.csv](https://github.com/biostat-text/web_appendix/blob/main/heart.csv)
   
 ### 第3章: 確率分布
-本文:
+
+　本文:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch3_R.R)
 
-章末問題:
+　章末問題:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch3_Problems_R.R) 
 
 ### 第4章: 標本分布
-本文:
+
+　本文:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch4.R.R)
 
-章末問題:
+　章末問題:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch4_Problems_R.R) 
 
 ### 第5章: 推定
-  本文:　
+  
+　本文:　
   [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch5_R.txt), 
   [実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch5_R_output.txt)
 
@@ -48,6 +52,7 @@
 
 
 ### 第6章: 二標本問題
+  
   本文:　
   [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch6_R.txt) 
   [実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch6_R_output.txt)
@@ -58,6 +63,7 @@
   [実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch6_Problems_R_output.txt)
 
 ### 第7章: 分散分析
+  
   本文: 
   [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch7_R.txt)
   [実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch7_R_output.txt)
@@ -68,18 +74,21 @@
   [実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch7_Problems_R_output.txt)
 
 ### 第8章: ノンパラメトリック法
-本文:
+
+　本文:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch8_R.R)
 
-章末問題:
+　章末問題:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch8_Problems_R.R) 
 
 ### 第9章: 相関と回帰分析
+  
   本文:
   
   章末問題: 
 
 ### 第10章: ロジスティック回帰分析
+  
   本文:
   
   章末問題: 
