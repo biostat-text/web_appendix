@@ -30,7 +30,7 @@
 
 ### 第4章: 標本分布
 本文:
-[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch4_R.R)
+[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch4.R.R)
 
 章末問題:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch4_Problems_R.R) 
