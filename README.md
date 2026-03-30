@@ -12,7 +12,7 @@
 　本文:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch1_R.R)
 
-章末問題:
+　章末問題:
 [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch1_Problems_R.R) 
 
 ### 第2章: 確率
