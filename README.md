@@ -92,7 +92,7 @@
 ### 第10章: ロジスティック回帰分析
 
 　本文:
-　[Rコード](https://biostat-text.github.io/web_appendix/Ch10_Rcode.html)
+　[Rコード](https://biostat-text.github.io/web_appendix/Ch10-Rcode.html)
 
 　章末問題:
 　[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch10_Problems_solution.pdf) 
