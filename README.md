@@ -65,36 +65,36 @@
 ### 第7章: 分散分析
   
 　本文: 
-  [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch7_R.txt)
-  [実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch7_R_output.txt)
+　[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch7_R.txt)
+　[実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch7_R_output.txt)
 
 　章末問題: 
-  [略解](https://github.com/biostat-text/web_appendix/blob/main/Ch7_Problems_solution.pdf)
-  [Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch7_Problems_R.txt)
-  [実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch7_Problems_R_output.txt)
+　[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch7_Problems_solution.pdf)
+　[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch7_Problems_R.txt)
+　[実行結果](https://github.com/biostat-text/web_appendix/blob/main/Ch7_Problems_R_output.txt)
 
 ### 第8章: ノンパラメトリック法
 
 　本文:
-[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch8_R.R)
+　[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch8_R.R)
 
 　章末問題:
-[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch8_Problems_R.R) 
+　[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch8_Problems_R.R) 
 
 ### 第9章: 相関と回帰分析
   
 　本文:
-[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch9_Rcode.html)
+　[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch9_Rcode.html)
 
 　章末問題:
-[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch9_Problems_solution.pdf) 
+　[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch9_Problems_solution.pdf) 
 
 ### 第10章: ロジスティック回帰分析
-  
-[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch10_Rcode.html)
+
+　[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch10_Rcode.html)
 
 　章末問題:
-[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch10_Problems_solution.pdf) 
+　[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch10_Problems_solution.pdf) 
 
 
 ### 第11章: 生存時間解析（基礎編）
@@ -104,5 +104,5 @@
 ### 第13章: 研究デザイン
 
 　章末問題:
-[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch13_Problems_solution.pdf) 
+　[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch13_Problems_solution.pdf) 
 
