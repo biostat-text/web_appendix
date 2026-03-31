@@ -84,17 +84,25 @@
 ### 第9章: 相関と回帰分析
   
 　本文:
-  
-　章末問題: 
+[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch9_Rcode.html)
+
+　章末問題:
+[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch9_Problems_solution.pdf) 
 
 ### 第10章: ロジスティック回帰分析
   
-　本文:
-  
-　章末問題: 
+[Rコード](https://github.com/biostat-text/web_appendix/blob/main/Ch10_Rcode.html)
+
+　章末問題:
+[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch10_Problems_solution.pdf) 
+
 
 ### 第11章: 生存時間解析（基礎編）
 
 ### 第12章: 生存時間解析
 
 ### 第13章: 研究デザイン
+
+　章末問題:
+[略解](https://github.com/biostat-text/web_appendix/blob/main/Ch13_Problems_solution.pdf) 
+
